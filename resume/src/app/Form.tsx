@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
+import Image from "next/image";
 
 export function UploadForm() {
     const [file, setFile] = useState<File>()
-
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!file) return
@@ -12,21 +12,19 @@ export function UploadForm() {
         try {
             const data = new FormData()
             data.set('file', file)
-
-            const res = await fetch('https://cv-umber-xi.vercel.app/api/upload', {
+            const res = await fetch('/api/upload', {
                 method: 'POST',
                 body: data
             })
-            // handle the error
             if (!res.ok) throw new Error(await res.text())
         } catch (e: any) {
-            // Handle errors here
             console.error(e)
         }
     }
 
     return (
         <form onSubmit={onSubmit}>
+            <Image src="/ui_ux.png" alt="image" width={100} height={100}/>
             <input
                 type="file"
                 name="file"

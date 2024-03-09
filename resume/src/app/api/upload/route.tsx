@@ -1,9 +1,9 @@
-import {mkdir, writeFile} from 'fs/promises'
+import { writeFile} from 'fs/promises'
 import { NextRequest, NextResponse } from 'next/server'
-import {writeFileSync} from "fs";
-
+let path = require("path");
 export async function POST(request: NextRequest) {
     const data = await request.formData()
+
     const file: File | null = data.get('file') as unknown as File
 
     if (!file) {
@@ -14,10 +14,9 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes)
     // With the file data in the buffer, you can do whatever you want with it.
     // For this, we'll just write it to the filesystem in a new location
-    const path = `https://cv-umber-xi.vercel.app/tmp/${file.name}`
-    console.log(__dirname);
-    await writeFile(path, buffer)
-    console.log(`open ${path} to see the uploaded file`)
+    const filePath = `${path.resolve("./")}/public/${file.name}`
+    await writeFile(filePath, buffer)
+    console.log(`open ${filePath} to see the uploaded file`)
 
-    return NextResponse.json({ success: true,buffer:buffer,file })
+    return NextResponse.json({ success: true })
 }

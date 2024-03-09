@@ -1,9 +1,8 @@
 import { writeFile} from 'fs/promises'
 import { NextRequest, NextResponse } from 'next/server'
-let path = require("path");
 export async function POST(request: NextRequest) {
     const data = await request.formData()
-
+    console.log("process.cwd() : ", process.cwd());
     const file: File | null = data.get('file') as unknown as File
 
     if (!file) {
@@ -14,7 +13,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes)
     // With the file data in the buffer, you can do whatever you want with it.
     // For this, we'll just write it to the filesystem in a new location
-    const filePath = `${path.resolve("./")}/public/${file.name}`
+    const filePath = `${process.cwd()}/public/${file.name}`
     await writeFile(filePath, buffer)
     console.log(`open ${filePath} to see the uploaded file`)
 
